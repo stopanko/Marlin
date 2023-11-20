@@ -42,13 +42,14 @@
  */
 #ifdef __arm__
 
-  extern "C" char* sbrk(int incr);
+  //extern "C" char* sbrk(int incr);
   int SdFatUtil::FreeRam() {
-    char top;
-    return &top - reinterpret_cast<char*>(sbrk(0));
+    char top=0;
+    //return &top - reinterpret_cast<char*>(sbrk(0));
+    return top;
   }
 
-#elif defined(__AVR__)
+#else
 
   extern char* __brkval;
   extern char __bss_end;
