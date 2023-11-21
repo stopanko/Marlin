@@ -130,16 +130,16 @@ void PrintJobRecovery::check() {
  * Delete the recovery file and clear the recovery data
  */
 void PrintJobRecovery::purge() {
-	
+
 #if 0
 	  card.removeJobRecoveryFile();
 #endif
-	
+
 	  if(info.valid_head != 0xFF || info.valid_foot != 0xFF) {
 		if(persistentStore.FLASH_If_Erase(FLASH_OUTAGE_DATA_ADDR, FLASH_OUTAGE_DATA_ADDR+0x400) != FLASHIF_OK) {
 		}
 	  }
-	
+
 	  memset(&info, 0, sizeof(info));	// init();
 
 }
@@ -336,34 +336,34 @@ void PrintJobRecovery::save(const bool force/*=false*/, const float zraise/*=0*/
 
   //    TERN_(USE_WATCHDOG, HAL_watchdog_refresh());
   //    __disable_irq();
-  
+
     #if POWER_LOSS_ZRAISE
       // Get the limited Z-raise to do now or on resume
       const float zraise = _MAX(0, _MIN(current_position.z + POWER_LOSS_ZRAISE, Z_MAX_POS - 1) - current_position.z);
     #else
       constexpr float zraise = 0;
     #endif
-  
+
     WRITE(HEATER_0_PIN, 0);
     WRITE(HEATER_BED_PIN, 0);
     ExtUI::onPowerLoss();
     WRITE(X_ENABLE_PIN, 1);
     WRITE(Y_ENABLE_PIN, 1);
     WRITE(Z_ENABLE_PIN, 1);
-  
+
     // Save, including the limited Z raise
     if (IS_SD_PRINTING()) save(true, zraise);
-  
+
     // Disable all heaters to reduce power loss
     thermalManager.disable_all_heaters();
-  
+
     #if ENABLED(BACKUP_POWER_SUPPLY)
       // Do a hard-stop of the steppers (with possibly a loud thud)
       quickstop_stepper();
       // With backup power a retract and raise can be done now
       retract_and_lift(zraise);
     #endif
-  
+
     kill(GET_TEXT(MSG_OUTAGE_RECOVERY));
   }
 
@@ -652,7 +652,7 @@ void PrintJobRecovery::resume() {
   #endif
 
     babystep.add_steps(Z_AXIS, all_baby_steps);
-  
+
     gcode.process_subcommands_now("M400\nG4 P1000");
 
   #if DEBUG_POWERLOSS_RESUME
@@ -703,7 +703,7 @@ void PrintJobRecovery::resume() {
   TERN_(HAS_HOME_OFFSET, home_offset = info.home_offset);
   TERN_(HAS_POSITION_SHIFT, position_shift = info.position_shift);
   #if HAS_HOME_OFFSET || HAS_POSITION_SHIFT
-    LOOP_XYZ(i) update_workspace_offset((AxisEnum)i);
+    LOOP_NUM_AXES(i) update_workspace_offset((AxisEnum)i);
   #endif
 
   // Relative axis modes
@@ -746,7 +746,7 @@ void PrintJobRecovery::resume() {
 
         #if HAS_HOME_OFFSET
           DEBUG_ECHOPGM("home_offset: ");
-          LOOP_XYZ(i) {
+          LOOP_NUM_AXES(i) {
             if (i) DEBUG_CHAR(',');
             DEBUG_DECIMAL(info.home_offset[i]);
           }
@@ -755,7 +755,7 @@ void PrintJobRecovery::resume() {
 
         #if HAS_POSITION_SHIFT
           DEBUG_ECHOPGM("position_shift: ");
-          LOOP_XYZ(i) {
+          LOOP_NUM_AXES(i) {
             if (i) DEBUG_CHAR(',');
             DEBUG_DECIMAL(info.position_shift[i]);
           }

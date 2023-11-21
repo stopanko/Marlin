@@ -131,6 +131,16 @@
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     #define HAS_FILAMENT_RUNOUT_DISTANCE 1
   #endif
+<<<<<<< HEAD
+=======
+  #if ENABLED(MIXING_EXTRUDER)
+    #define WATCH_ALL_RUNOUT_SENSORS
+  #endif
+#endif
+
+#if ANY(PTC_PROBE, PTC_BED, PTC_HOTEND)
+  #define HAS_PTC 1
+>>>>>>> 2.0.x
 #endif
 
 // Let SD_FINISHED_RELEASECOMMAND stand in for SD_FINISHED_STEPPERRELEASE
@@ -150,6 +160,17 @@
   #define HAS_PRINT_PROGRESS 1
 #endif
 
+<<<<<<< HEAD
+=======
+#if ANY(HAS_MARLINUI_MENU, ULTIPANEL_FEEDMULTIPLY, SOFT_RESET_ON_KILL)
+  #define HAS_ENCODER_ACTION 1
+#endif
+
+#if STATUS_MESSAGE_TIMEOUT_SEC > 0
+  #define HAS_STATUS_MESSAGE_TIMEOUT 1
+#endif
+
+>>>>>>> 2.0.x
 #if ENABLED(SDSUPPORT) && SD_PROCEDURE_DEPTH
   #define HAS_MEDIA_SUBCALLS 1
 #endif
@@ -471,6 +492,37 @@
   #endif
 #endif
 
+// Remove unused STEALTHCHOP flags
+#if NUM_AXES < 6
+  #undef STEALTHCHOP_K
+  #undef CALIBRATION_MEASURE_KMIN
+  #undef CALIBRATION_MEASURE_KMAX
+  #if NUM_AXES < 5
+    #undef STEALTHCHOP_J
+    #undef CALIBRATION_MEASURE_JMIN
+    #undef CALIBRATION_MEASURE_JMAX
+    #if NUM_AXES < 4
+      #undef STEALTHCHOP_I
+      #undef CALIBRATION_MEASURE_IMIN
+      #undef CALIBRATION_MEASURE_IMAX
+      #if NUM_AXES < 3
+        #undef Z_IDLE_HEIGHT
+        #undef STEALTHCHOP_Z
+        #undef Z_PROBE_SLED
+        #undef Z_SAFE_HOMING
+        #undef HOME_Z_FIRST
+        #undef HOMING_Z_WITH_PROBE
+        #undef ENABLE_LEVELING_FADE_HEIGHT
+        #undef NUM_Z_STEPPERS
+        #undef CNC_WORKSPACE_PLANES
+        #if NUM_AXES < 2
+          #undef STEALTHCHOP_Y
+        #endif
+      #endif
+    #endif
+  #endif
+#endif
+
 //
 // SD Card connection methods
 // Defined here so pins and sanity checks can use them
@@ -516,12 +568,30 @@
                          (defined(SERIAL_PORT_2) && SERIAL_PORT_2 == (N)) || \
                          (defined(MMU2_SERIAL_PORT) && MMU2_SERIAL_PORT == (N)) || \
                          (defined(LCD_SERIAL_PORT) && LCD_SERIAL_PORT == (N))
+
+/**
+ * LCD_SERIAL_PORT must be defined ahead of HAL.h
+ */
+#ifndef LCD_SERIAL_PORT
+  #if HAS_DWIN_E3V2 || IS_DWIN_MARLINUI || HAS_DGUS_LCD
+    #if MB(BTT_SKR_MINI_E3_V1_0, BTT_SKR_MINI_E3_V1_2, BTT_SKR_MINI_E3_V2_0, BTT_SKR_MINI_E3_V3_0, BTT_SKR_E3_TURBO)
+      #define LCD_SERIAL_PORT 1
+    #elif MB(CREALITY_V24S1_301, CREALITY_V24S1_301F4, CREALITY_V423, MKS_ROBIN)
+      #define LCD_SERIAL_PORT 2 // Creality Ender3S1, MKS Robin
+    #else
+      #define LCD_SERIAL_PORT 3 // Other boards
+    #endif
+  #endif
+  #ifdef LCD_SERIAL_PORT
+    #define AUTO_ASSIGNED_LCD_SERIAL 1
+  #endif
+#endif
+
 #if ANY_SERIAL_IS(-1)
   #define USING_SERIAL_DEFAULT
 #endif
 #if ANY_SERIAL_IS(0)
   #define USING_SERIAL_0 1
-#endif
 #if ANY_SERIAL_IS(1)
   #define USING_SERIAL_1 1
 #endif
@@ -534,16 +604,8 @@
 #if ANY_SERIAL_IS(4)
   #define USING_SERIAL_4 1
 #endif
-#if ANY_SERIAL_IS(5)
-  #define USING_SERIAL_5 1
+
+// Delay Sensorless Homing/Probing
+#if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING) && !defined(SENSORLESS_STALLGUARD_DELAY)
+  #define SENSORLESS_STALLGUARD_DELAY 0
 #endif
-#if ANY_SERIAL_IS(6)
-  #define USING_SERIAL_6 1
-#endif
-#if ANY_SERIAL_IS(7)
-  #define USING_SERIAL_7 1
-#endif
-#if ANY_SERIAL_IS(8)
-  #define USING_SERIAL_8 1
-#endif
-#undef ANY_SERIAL_IS

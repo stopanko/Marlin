@@ -34,7 +34,6 @@ FWRetract fwretract; // Single instance - this calls the constructor
 
 #include "../module/motion.h"
 #include "../module/planner.h"
-#include "../module/stepper.h"
 
 #if ENABLED(RETRACT_SYNC_MIXING)
   #include "mixing.h"

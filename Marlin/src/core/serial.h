@@ -27,9 +27,9 @@
   #include "../feature/ethernet.h"
 #endif
 
-/**
- * Define debug bit-masks
- */
+//
+// Debugging flags for use by M111
+//
 enum MarlinDebugFlags : uint8_t {
   MARLIN_DEBUG_NONE          = 0,
   MARLIN_DEBUG_ECHO          = _BV(0), ///< Echo commands in order as they are processed
@@ -322,11 +322,40 @@ void serialprint_truefalse(const bool tf);
 void serial_spaces(uint8_t count);
 
 void print_bin(const uint16_t val);
-void print_xyz(const float &x, const float &y, const float &z, PGM_P const prefix=nullptr, PGM_P const suffix=nullptr);
+void print_pos(NUM_AXIS_ARGS(const_float_t), FSTR_P const prefix=nullptr, FSTR_P const suffix=nullptr);
 
-inline void print_xyz(const xyz_pos_t &xyz, PGM_P const prefix=nullptr, PGM_P const suffix=nullptr) {
-  print_xyz(xyz.x, xyz.y, xyz.z, prefix, suffix);
+inline void print_pos(const xyz_pos_t &xyz, FSTR_P const prefix=nullptr, FSTR_P const suffix=nullptr) {
+  print_pos(NUM_AXIS_ELEM(xyz), prefix, suffix);
 }
 
-#define SERIAL_POS(SUFFIX,VAR) do { print_xyz(VAR, PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n")); }while(0)
-#define SERIAL_XYZ(PREFIX,V...) do { print_xyz(V, PSTR(PREFIX), nullptr); }while(0)
+#define SERIAL_POS(SUFFIX,VAR) do { print_pos(VAR, F("  " STRINGIFY(VAR) "="), F(" : " SUFFIX "\n")); }while(0)
+#define SERIAL_XYZ(PREFIX,V...) do { print_pos(V, F(PREFIX)); }while(0)
+
+//
+// Commonly-used strings in serial output
+//
+
+#define _N_STR(N) N##_STR
+#define _N_LBL(N) N##_LBL
+#define _N_STR_A(N) _N_STR(N)[]
+#define _N_LBL_A(N) _N_LBL(N)[]
+#define _SP_N_STR(N) SP_##N##_STR
+#define _SP_N_LBL(N) SP_##N##_LBL
+#define _SP_N_STR_A(N) _SP_N_STR(N)[]
+#define _SP_N_LBL_A(N) _SP_N_LBL(N)[]
+
+extern const char SP_A_STR[], SP_B_STR[], SP_C_STR[], SP_P_STR[], SP_T_STR[], NUL_STR[],
+                  MAPLIST(_N_STR_A, LOGICAL_AXIS_NAMES), MAPLIST(_SP_N_STR_A, LOGICAL_AXIS_NAMES),
+                  MAPLIST(_N_LBL_A, LOGICAL_AXIS_NAMES), MAPLIST(_SP_N_LBL_A, LOGICAL_AXIS_NAMES);
+
+PGM_P const SP_AXIS_LBL[] PROGMEM = { MAPLIST(_SP_N_LBL, LOGICAL_AXIS_NAMES) };
+PGM_P const SP_AXIS_STR[] PROGMEM = { MAPLIST(_SP_N_STR, LOGICAL_AXIS_NAMES) };
+
+#undef _N_STR
+#undef _N_LBL
+#undef _N_STR_A
+#undef _N_LBL_A
+#undef _SP_N_STR
+#undef _SP_N_LBL
+#undef _SP_N_STR_A
+#undef _SP_N_LBL_A

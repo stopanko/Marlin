@@ -285,8 +285,8 @@ private:
 };
 
 #if ENABLED(USB_FLASH_DRIVE_SUPPORT)
-  #define IS_SD_INSERTED() Sd2Card::isInserted()
-#elif PIN_EXISTS(SD_DETECT)
+  #define IS_SD_INSERTED() DiskIODriver_USBFlash::isInserted()
+#elif HAS_SD_DETECT
   #define IS_SD_INSERTED() (READ(SD_DETECT_PIN) == SD_DETECT_STATE)
 #else
   // No card detect line? Assume the card is inserted.

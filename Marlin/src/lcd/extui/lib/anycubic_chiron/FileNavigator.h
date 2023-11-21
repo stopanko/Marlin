@@ -22,35 +22,16 @@
 #pragma once
 
 /**
- * lcd/extui/lib/FileNavigator.h
+ * MKS BASE 1.0 – Arduino Mega2560 with RAMPS v1.4 pin assignments
  *
- * Extensible_UI implementation for Anycubic Chiron
- * Written By Nick Wells, 2020 [https://github.com/SwiftNick]
- *  (not affiliated with Anycubic, Ltd.)
+ * Rev B - Override pin definitions for CASE_LIGHT and M3/M4/M5 spindle control
  */
 
-#include "chiron_tft_defs.h"
-#include "../../ui_api.h"
+#if HOTENDS > 2 || E_STEPPERS > 2
+  #error "MKS BASE 1.0 supports up to 2 hotends / E steppers."
+#endif
 
-using namespace ExtUI;
+#define BOARD_INFO_NAME "MKS BASE 1.0"
+#define MKS_BASE_VERSION 10
 
-namespace Anycubic {
-  class FileNavigator {
-    public:
-      FileNavigator();
-      void   reset();
-      void   getFiles(uint16_t);
-      void   upDIR();
-      void   changeDIR(char *);
-      void   sendFile();
-      void   refresh();
-      char * getCurrentFolderName();
-    private:
-      static FileList  filelist;
-      static char      currentfoldername[MAX_PATH_LEN];
-      static uint16_t  lastindex;
-      static uint8_t   folderdepth;
-      static uint16_t  currentindex;
-  };
-  extern FileNavigator filenavigator;
-}
+#include "pins_MKS_BASE_common.h" // ... RAMPS

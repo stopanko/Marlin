@@ -22,40 +22,26 @@
 #pragma once
 
 /**
- * lcd/extui/lib/FileNavigator.h
- *
- * Extensible_UI implementation for Anycubic Chiron
- * Written By Nick Wells, 2020 [https://github.com/SwiftNick]
- *  (not affiliated with Anycubic, Ltd.)
+ * BAM&DICE Due (Arduino Mega) pin assignments
  */
 
-#include "dgus_tft_defs.h"
-#include "../../ui_api.h"
+#if HOTENDS > 2 || E_STEPPERS > 2
+  #error "2PrintBeta Due supports up to 2 hotends / E steppers."
+#endif
 
-using namespace ExtUI;
+#define BOARD_INFO_NAME "2PrintBeta Due"
 
-namespace Anycubic {
-  class FileNavigator {
-    public:
-      FileNavigator();
+//
+// M3/M4/M5 - Spindle/Laser Control
+//
+#define SPINDLE_LASER_ENA_PIN                 66  // Pullup or pulldown!
+#define SPINDLE_DIR_PIN                       67
+#define SPINDLE_LASER_PWM_PIN                 44  // Hardware PWM
 
-      static FileList  filelist;
-      
-      void   reset();
-      void   getFiles(uint16_t);
-      void   upDIR();
-      void   changeDIR(char *);
-      void   sendFile();
-      void   refresh();
-      char * getCurrentFolderName();
-      uint16_t getFileNum();
+//
+// Temperature Sensors
+//
+#define TEMP_0_PIN                             9  // Analog Input
+#define TEMP_1_PIN                            11  // Analog Input
 
-    private:
-      
-      static char      currentfoldername[MAX_PATH_LEN];
-      static uint16_t  lastindex;
-      static uint8_t   folderdepth;
-      static uint16_t  currentindex;
-  };
-  extern FileNavigator filenavigator;
-}
+#include "pins_RAMPS.h"

@@ -25,7 +25,9 @@
  * HAL for stm32duino.com based on Libmaple and compatible (STM32F1)
  */
 
-#include "../cores/iwdg.h"
+#if HOTENDS > 2 || E_STEPPERS > 2
+  #error "KFB 2.0 supports up to 2 hotends / E steppers."
+#endif
 
 /**
  *  The watchdog clock is 40Khz. We need a 4 seconds interval, so use a /256 preescaler and
