@@ -476,9 +476,6 @@
   #endif
 #endif
 
-<<<<<<< HEAD
-#if EITHER(HAS_DISPLAY, GLOBAL_STATUS_MESSAGE)
-=======
 #if ANY(HAS_WIRED_LCD, EXTENSIBLE_UI, DWIN_LCD_PROUI, DWIN_CREALITY_LCD_JYERSUI)
   #define HAS_DISPLAY 1
 #endif
@@ -488,7 +485,6 @@
 #endif
 
 #if HAS_DISPLAY || HAS_DWIN_E3V2
->>>>>>> 2.0.x
   #define HAS_STATUS_MESSAGE 1
 #endif
 
@@ -608,8 +604,6 @@
   #define E_MANUAL EXTRUDERS
 #endif
 
-<<<<<<< HEAD
-=======
 /**
  * Number of Linear Axes (e.g., XYZIJK)
  * All the logical axes except for the tool (E) axis
@@ -817,7 +811,6 @@
   #define E_INDEX_N(E) 0
 #endif
 
->>>>>>> 2.0.x
 #if HOTENDS
   #define HAS_HOTEND 1
   #ifndef HOTEND_OVERSHOOT
@@ -915,11 +908,7 @@
 #endif
 
 /**
-<<<<<<< HEAD
- * Set flags for enabled probes
-=======
  * Set flags for any form of bed probe
->>>>>>> 2.0.x
  */
 #if ANY(HAS_Z_SERVO_PROBE, FIX_MOUNTED_PROBE, NOZZLE_AS_PROBE, TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, Z_PROBE_SLED, SOLENOID_PROBE, SENSORLESS_PROBING, RACK_AND_PINION_PROBE)
   #define HAS_BED_PROBE 1
@@ -1031,14 +1020,10 @@
   #if DISABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
     #define HAS_CUSTOM_PROBE_PIN 1
   #endif
-<<<<<<< HEAD
-  #if Z_HOME_DIR < 0 && (!HAS_CUSTOM_PROBE_PIN || ENABLED(USE_PROBE_FOR_Z_HOMING))
-=======
   #if NONE(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN, HAS_DELTA_SENSORLESS_PROBING)
     #define USES_Z_MIN_PROBE_PIN 1
   #endif
   #if Z_HOME_TO_MIN && (DISABLED(USES_Z_MIN_PROBE_PIN) || ENABLED(USE_PROBE_FOR_Z_HOMING))
->>>>>>> 2.0.x
     #define HOMING_Z_WITH_PROBE 1
   #endif
   #ifndef Z_PROBE_LOW_POINT
@@ -1330,11 +1315,7 @@
   #define TFT_DRIVER SSD1963
   #define TFT_RES_480x272
   #define TFT_INTERFACE_FSMC
-<<<<<<< HEAD
-#elif ENABLED(MKS_ROBIN_TFT_V1_1R)  // ILI9328 or R61505
-=======
 #elif EITHER(MKS_ROBIN_TFT_V1_1R, LONGER_LK_TFT28)                            // ILI9328 or R61505
->>>>>>> 2.0.x
   #define TFT_DEFAULT_ORIENTATION (TFT_EXCHANGE_XY | TFT_INVERT_X | TFT_INVERT_Y)
   #define TFT_RES_320x240
   #define TFT_INTERFACE_FSMC
@@ -1377,8 +1358,6 @@
   #define TFT_WIDTH  480
   #define TFT_HEIGHT 320
   #define GRAPHICAL_TFT_UPSCALE 3
-<<<<<<< HEAD
-=======
 #elif ENABLED(TFT_RES_1024x600)
   #define TFT_WIDTH  1024
   #define TFT_HEIGHT 600
@@ -1389,7 +1368,6 @@
     #define GRAPHICAL_TFT_UPSCALE 8
     #define TFT_PIXEL_OFFSET_X 0
   #endif
->>>>>>> 2.0.x
 #endif
 
 // FSMC/SPI TFT Panels using standard HAL/tft/tft_(fsmc|spi).h

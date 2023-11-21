@@ -245,10 +245,7 @@
 
 #define _LIST_N(N,V...) LIST_##N(V)
 #define LIST_N(N,V...) _LIST_N(N,V)
-<<<<<<< HEAD
-=======
 #define LIST_N_1(N,K) _LIST_N(N,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K,K)
->>>>>>> 2.0.x
 #define ARRAY_N(N,V...) { _LIST_N(N,V) }
 
 #define _JOIN_1(O)         (O)

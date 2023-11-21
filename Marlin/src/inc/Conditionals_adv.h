@@ -131,8 +131,6 @@
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     #define HAS_FILAMENT_RUNOUT_DISTANCE 1
   #endif
-<<<<<<< HEAD
-=======
   #if ENABLED(MIXING_EXTRUDER)
     #define WATCH_ALL_RUNOUT_SENSORS
   #endif
@@ -140,7 +138,6 @@
 
 #if ANY(PTC_PROBE, PTC_BED, PTC_HOTEND)
   #define HAS_PTC 1
->>>>>>> 2.0.x
 #endif
 
 // Let SD_FINISHED_RELEASECOMMAND stand in for SD_FINISHED_STEPPERRELEASE
@@ -160,8 +157,6 @@
   #define HAS_PRINT_PROGRESS 1
 #endif
 
-<<<<<<< HEAD
-=======
 #if ANY(HAS_MARLINUI_MENU, ULTIPANEL_FEEDMULTIPLY, SOFT_RESET_ON_KILL)
   #define HAS_ENCODER_ACTION 1
 #endif
@@ -170,7 +165,6 @@
   #define HAS_STATUS_MESSAGE_TIMEOUT 1
 #endif
 
->>>>>>> 2.0.x
 #if ENABLED(SDSUPPORT) && SD_PROCEDURE_DEPTH
   #define HAS_MEDIA_SUBCALLS 1
 #endif
